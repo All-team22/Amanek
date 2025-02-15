@@ -1,10 +1,10 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Diagnostics;
 
-namespace Amanek.Controllers
+namespace Amanek.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
