@@ -15,7 +15,14 @@ namespace DataAccess.Repository
         public UnitOfWorks(ApplicationDbContext context)
         {
             this.context = context;
+            InsuranceCompany = new InsuranceCompanyRepository(context);
+            ApplicationUserRepository = new ApplicationUserRepository(context); 
         }
+
+        public IInsuranceCompanyRepository InsuranceCompany {  get; private set; }
+
+        public IApplicationUserRepository ApplicationUserRepository { get; private set; }
+
         public void Commit()
         {
             context.SaveChanges();

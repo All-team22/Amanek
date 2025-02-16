@@ -20,6 +20,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using DataAccess.Repository.IRepository;
+using Utility;
 
 namespace Amanek.Areas.Identity.Pages.Account
 {
@@ -28,23 +32,30 @@ namespace Amanek.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IUnitOfWorks _unitOfWork;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
+             RoleManager<IdentityRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IUnitOfWorks unitOfWork
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
+            _roleManager = roleManager;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -113,11 +124,34 @@ namespace Amanek.Areas.Identity.Pages.Account
             [StringLength(11, MinimumLength = 11, ErrorMessage = "Phone Number must be exactly 11 characters.")]
             [Display(Name = ("Phone Number"))]
             public string PhoneNumber { get; set; }
+            [Required]
+            public string Role { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> ListOfRoles { get; set; } = null!;
+
+            public int? Company { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> ListOfCompanies { get; set; } = null!;
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+
+            Input = new InputModel
+            {
+                ListOfRoles = _roleManager.Roles.Select(e => new SelectListItem
+                {
+                    Text = e.Name,
+                    Value = e.Name
+                }),
+
+                ListOfCompanies = _unitOfWork.InsuranceCompany.Get().Select(e => new SelectListItem
+                {
+                    Text = e.Name,
+                    Value = e.Id.ToString()
+                })
+            };
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -129,13 +163,19 @@ namespace Amanek.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
+                await _userManager.AddToRoleAsync(user, Input.Role);
                 await _userStore.SetUserNameAsync(user, new MailAddress(Input.Email).User, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.FullName = Input.FullName;
                 user.FullAddress = Input.FullAddress;
                 user.IdentificationNumber = Input.IdentificationNumber;
                 user.PhoneNumber = Input.PhoneNumber;
+                if (Input.Role == SD.CompanyRole)
+                {
+                    user.CompanyId = Input.Company;
+                }
+
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -160,7 +200,14 @@ namespace Amanek.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(SD.AdminRole))
+                        {
+                            TempData["alert"] = "Added New User successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }

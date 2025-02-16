@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Models;
 using Data_Access;
+using DataAccess.Repository.IRepository;
+using DataAccess.Repository;
 
 namespace Amanek
 {
@@ -22,7 +24,7 @@ namespace Amanek
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option => option.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultUI().AddDefaultTokenProviders();
-
+            builder.Services.AddScoped<IUnitOfWorks, UnitOfWorks>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

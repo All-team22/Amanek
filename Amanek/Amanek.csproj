@@ -25,7 +25,4 @@
 	  <ProjectReference Include="..\Models\Models.csproj" />
 	  <ProjectReference Include="..\Utility\Utility.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Areas\Admin\Controllers\" />
-	</ItemGroup>
 </Project>

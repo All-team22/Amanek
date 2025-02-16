@@ -8,6 +8,8 @@ namespace DataAccess.Repository.IRepository
 {
     public interface IUnitOfWorks
     {
+        public IInsuranceCompanyRepository InsuranceCompany { get;  }
+        IApplicationUserRepository ApplicationUserRepository { get; }
         void Commit ();
     }
 }
