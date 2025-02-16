@@ -5,7 +5,7 @@
             dataSrc: ''
         },
         columns: [
-            { data: 'name', defaultContent: 'N/A' },
+            { data: 'fullName', defaultContent: 'N/A' },
             { data: 'email', defaultContent: 'N/A' },
             { data: 'phoneNumber', defaultContent: 'N/A' },
             { data: 'company.name', defaultContent: 'N/A' },

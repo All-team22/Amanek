@@ -87,14 +87,26 @@ namespace Amanek.Areas.Admin.Controllers
         public async Task<IActionResult> GetAll()
         {
             var users = unitOfWork.ApplicationUserRepository.Get(includeProperties: e => e.InsuranceCompany);
-            // Retrieve the roles for each user
+
+            var userList = new List<object>();
+
             foreach (var user in users)
             {
-                user.Role = string.Join(", ", await userManager.GetRolesAsync(user));
+                userList.Add(new
+                {
+                    id = user.Id,
+                    fullName = user.FullName, // Ensure lowercase to match DataTables
+                    email = user.Email,
+                    phoneNumber = user.PhoneNumber,
+                    company = new { name = user.InsuranceCompany?.Name ?? "N/A" }, // Handle null
+                    role = string.Join(", ", await userManager.GetRolesAsync(user)),
+                    lockoutEnd = user.LockoutEnd
+                });
             }
 
-            return Json(users);
+            return Json(userList);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> LockUnlock([FromBody] string userId)
