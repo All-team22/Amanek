@@ -14,9 +14,8 @@ namespace Models
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
         public string FullName { get; set; } = null!;
-        [Required]
-        [StringLength(255, ErrorMessage = "Address cannot exceed 255 characters.")]
-        public string FullAddress { get; set; }
+       
+        public string? FullAddress { get; set; }
         public byte[]? ProfilePicture { get; set; }
         public int? CompanyId { get; set; }
 

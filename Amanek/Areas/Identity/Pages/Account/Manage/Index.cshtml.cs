@@ -56,21 +56,40 @@ namespace Amanek.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            [Required]
             [Phone]
             [Display(Name = "Phone number")]
+            [StringLength(11, MinimumLength = 11, ErrorMessage = "Phone Number must be exactly 11 characters.")]
             public string PhoneNumber { get; set; }
+            [Required]
+            [Display(Name = "ID")]
+            [StringLength(14, MinimumLength = 14, ErrorMessage = "ID Number must be exactly 14 characters.")]
+            public string IdentificationNumber { get; set; }
+            [Required]
+            [Display(Name =("Full Name"))]
+            public string FullName { get; set; }
+           
+            [Display(Name = ("Full Address"))]
+            public string FullAddress { get; set; }
+            [Display(Name ="Profile Picture")]
+            public byte[] ProfilePicture { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                IdentificationNumber = user.IdentificationNumber,
+                FullAddress = user.FullAddress,
+                FullName = user.FullName,
+                ProfilePicture = user.ProfilePicture,
+                
             };
         }
 
@@ -110,7 +129,23 @@ namespace Amanek.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
+            user.FullAddress = Input.FullAddress;
+            user.FullName = Input.FullName;
+            user.IdentificationNumber = Input.IdentificationNumber;
+            if (Request.Form.Files.Count > 0)
+            {
+                var file = Request.Form.Files.FirstOrDefault();
+                if (file != null && file.Length != 0)
+                {
+                    using (var dataStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(dataStream);
+                        user.ProfilePicture = dataStream.ToArray();
+                    }
+                    //await _userManager.UpdateAsync(user);
+                }
+            }
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

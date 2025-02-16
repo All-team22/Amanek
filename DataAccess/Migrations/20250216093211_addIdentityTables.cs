@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentityTables : Migration
+    public partial class addIdentityTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,7 +53,7 @@ namespace DataAccess.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     IdentificationNumber = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true),
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    FullAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    FullAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

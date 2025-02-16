@@ -7,9 +7,9 @@
 
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
+<form id="profile-form" method="post" enctype="multipart/form-data">
 <div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
                 <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
@@ -20,11 +20,83 @@
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.IdentificationNumber" class="form-control" placeholder="Please enter your ID." />
+                <label asp-for="Input.IdentificationNumber" class="form-label"></label>
+                <span asp-validation-for="Input.IdentificationNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FullName" class="form-control" placeholder="Please enter your full name." />
+                <label asp-for="Input.FullName" class="form-label"></label>
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FullAddress" class="form-control" placeholder="Please enter your full address." />
+                <label asp-for="Input.FullAddress" class="form-label"></label>
+                <span asp-validation-for="Input.FullAddress" class="text-danger"></span>
+            </div>
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
-    </div>
-</div>
+            </div>
+        <!-- Profile Picture Section -->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.ProfilePicture" class="w-100">Profile Picture</label>
 
+                <!-- Display Profile Picture or Default -->
+                <img id="profilePicture" alt="Profile Picture" class="Profile-Picture img-thumbnail"
+                     src="@(Model.Input.ProfilePicture != null && Model.Input.ProfilePicture.Length > 0
+                     ? $"data:image/*;base64,{Convert.ToBase64String(Model.Input.ProfilePicture)}"
+                     : "/images/UserDefaultProfilePicture.png")" />
+
+                <!-- File Input for Upload -->
+                <div class="custom-file mt-2">
+                    <input type="file" accept="image/*" asp-for="Input.ProfilePicture"
+                           class="custom-file-input" id="profilePictureInput" />
+                    <label class="custom-file-label" for="profilePictureInput"></label>
+                </div>
+                <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+            </div>
+        </div>
+     </div>
+</form>
 @section Scripts {
+    <script>
+        document.getElementById('profilePictureInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('profilePicture');
+            const label = event.target.nextElementSibling;
+
+            if (file) {
+                // Validate file type
+                const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Invalid file type! Please upload an image (jpeg, jpg, png, gif).");
+                    event.target.value = ""; // Reset input
+                    return;
+                }
+
+                // Validate file size (2MB max)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert("File size must be less than 2MB!");
+                    event.target.value = ""; // Reset input
+                    return;
+                }
+
+                
+                
+
+                // Show image preview
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Reset if no file selected
+                preview.src = "/images/UserDefaultProfilePicture.png"; // Default image
+            }
+        });
+    </script>
+
     <partial name="_ValidationScriptsPartial" />
 }

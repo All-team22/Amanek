@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Net.Mail;
 
 namespace Amanek.Areas.Identity.Pages.Account
 {
@@ -98,6 +99,20 @@ namespace Amanek.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [Required]
+            [Display(Name = "Full Name")]
+            public string FullName { get; set; }
+            [Required(ErrorMessage = "Identification Number is required.")]
+            [StringLength(14, MinimumLength = 14, ErrorMessage = "Identification Number must be exactly 14 characters.")]
+            [Display(Name =("Identification Number"))]
+            public string IdentificationNumber { get; set; }
+            [Display(Name = ("Full Address"))]
+            public string FullAddress { get; set; }
+            [Phone]
+            [Required]
+            [StringLength(11, MinimumLength = 11, ErrorMessage = "Phone Number must be exactly 11 characters.")]
+            [Display(Name = ("Phone Number"))]
+            public string PhoneNumber { get; set; }
         }
 
 
@@ -115,8 +130,12 @@ namespace Amanek.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, new MailAddress(Input.Email).User, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FullName = Input.FullName;
+                user.FullAddress = Input.FullAddress;
+                user.IdentificationNumber = Input.IdentificationNumber;
+                user.PhoneNumber = Input.PhoneNumber;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
