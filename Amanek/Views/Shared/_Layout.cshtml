@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Amanek</title>
+    <title>@ViewData["Title"] - Amanak</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -18,21 +18,27 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BulkyBook.styles.css" asp-append-version="true" />
+    <link rel="icon" />
 
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .navbar {
             background: linear-gradient(45deg, #007bff, #0056b3) !important;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .navbar-brand {
             font-weight: bold;
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             letter-spacing: 1px;
         }
 
@@ -45,10 +51,17 @@
                 color: #ffdd57 !important;
             }
 
+        .nav-link {
+            color: #000 !important; /* Change to black or a dark color */
+        }
+
+        .sidebar a {
+            color: #000 !important;
+        }
         .dropdown-menu {
             background-color: #007bff;
             border: none;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .dropdown-item {
@@ -60,41 +73,47 @@
                 background-color: #0056b3;
             }
 
-        .footer {
-            background: #343a40;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            margin-top: 20px;
+        .content-wrapper {
+            width: 100%;
+            padding: 30px;
         }
 
-        .container {
-            max-width: 1200px;
-            padding: 20px;
+        .content-box {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+            padding: 25px;
         }
 
         .btn-custom {
-            background-color: #007bff;
+            background-color: #ff5733;
             color: white;
             border-radius: 30px;
             padding: 10px 20px;
             transition: all 0.3s ease;
+            font-weight: bold;
         }
 
             .btn-custom:hover {
-                background-color: #0056b3;
+                background-color: #cc4626;
                 transform: scale(1.05);
             }
+
+        .footer {
+            background: #222;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
     </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Amanek</a>
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Amanak</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -109,7 +128,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
-                        @if (User.IsInRole(SD.AdminRole))
+                        @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -134,13 +153,15 @@
         </nav>
     </header>
 
-    <div class="container mt-4">
-        <main role="main" class="pb-3">
+    <div class="content-wrapper">
+        <main role="main" class="content-box">
             @RenderBody()
         </main>
     </div>
 
-    
+    <footer class="footer">
+        <p>&copy; 2025 Amanek - All rights reserved</p>
+    </footer>
 
     <!-- jQuery -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
