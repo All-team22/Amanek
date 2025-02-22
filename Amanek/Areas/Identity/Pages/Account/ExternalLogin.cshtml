@@ -18,12 +18,35 @@
     <div class="col-md-4">
         <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email."/>
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6 form-floating">
+                    <input asp-for="Input.FullName" class="form-control" autocomplete="name" aria-required="true" placeholder="your name" />
+                    <label asp-for="Input.FullName">Name</label>
+                    <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-floating">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email." />
+                    <label asp-for="Input.Email" class="form-label"></label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-floating">
+                    <input asp-for="Input.IdentificationNumber" class="form-control" autocomplete="ID" placeholder="ID Number" />
+                    <label asp-for="Input.IdentificationNumber">Street Address</label>
+                    <span asp-validation-for="Input.IdentificationNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-floating">
+                    <input asp-for="Input.FullAddress" class="form-control" autocomplete="address" placeholder="address" />
+                    <label asp-for="Input.FullAddress">City</label>
+                    <span asp-validation-for="Input.FullAddress" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-floating">
+                    <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="phone" placeholder="phone" />
+                    <label asp-for="Input.PhoneNumber">State</label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+                
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button type="submit" class="w-100 btn btn-lg btn-dark">Register</button>
         </form>
     </div>
 </div>

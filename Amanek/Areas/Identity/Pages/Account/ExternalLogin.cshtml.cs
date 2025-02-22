@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Utility;
 
 namespace Amanek.Areas.Identity.Pages.Account
 {
@@ -85,8 +86,23 @@ namespace Amanek.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "Full Name")]
+            public string FullName { get; set; }
+            [Required(ErrorMessage = "Identification Number is required.")]
+            [StringLength(14, MinimumLength = 14, ErrorMessage = "Identification Number must be exactly 14 characters.")]
+            [Display(Name = ("Identification Number"))]
+            public string IdentificationNumber { get; set; }
+            [Display(Name = ("Full Address"))]
+            public string FullAddress { get; set; }
+            [Phone]
+            [Required]
+            [StringLength(11, MinimumLength = 11, ErrorMessage = "Phone Number must be exactly 11 characters.")]
+            [Display(Name = ("Phone Number"))]
+            public string PhoneNumber { get; set; }
         }
-        
+
         public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
@@ -132,7 +148,8 @@ namespace Amanek.Areas.Identity.Pages.Account
                 {
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        FullName = info.Principal.FindFirstValue(ClaimTypes.Name)
                     };
                 }
                 return Page();
@@ -154,8 +171,16 @@ namespace Amanek.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                await _userManager.AddToRoleAsync(user, SD.CustomerRole);
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.FullName = Input.FullName;
+                user.FullAddress = Input.FullAddress;
+                user.IdentificationNumber = Input.IdentificationNumber;
+                user.PhoneNumber = Input.PhoneNumber;
+                
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
