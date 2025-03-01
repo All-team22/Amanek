@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Models
@@ -34,5 +35,8 @@ namespace Models
 
         [ValidateNever]
         public string? Logo { get; set; }
+        public List<InsurancePolicy> Policy { get; set; }   = new List<InsurancePolicy>();
+        public List<InsurancePackage> Packages { get; set; } = new List<InsurancePackage>();
+        public List<Claim> Claim { get; set; } = new List<Claim>();
     }
 }
