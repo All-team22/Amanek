@@ -1,0 +1,37 @@
+﻿@model IEnumerable<InsurancePackage>
+
+@{
+    ViewData["Title"] = "Insurance Packages";
+}
+
+@if (!Model.Any())
+{
+    <h1>Nothing found</h1>
+}
+<h2 class="text-center mb-4">Insurance Packages</h2>
+
+<div class="container">
+    <div class="row">
+        @foreach (var package in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h5 class="card-title font-weight-bold">@package.PackageName</h5>
+                        <p class="card-text"><strong>Policy Price:</strong> $@package.PolicyPrice</p>
+                        <p class="card-text"><strong>Payment Frequency:</strong> @package.PaymentFrequency</p>
+                        <p class="card-text"><strong>Maintenance Schedule:</strong> @package.MaintenanceSchedule</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("Upsert", new { id = package.Id })" class="btn btn-primary">Edit</a>
+                            <a href="@Url.Action("Delete", new { id = package.Id })" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="@Url.Action("Upsert")" class="btn btn-success">Add New Package</a>
+</div>

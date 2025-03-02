@@ -16,12 +16,15 @@ namespace DataAccess.Repository
         {
             this.context = context;
             InsuranceCompanyRepository = new InsuranceCompanyRepository(context);
-            ApplicationUserRepository = new ApplicationUserRepository(context); 
+            ApplicationUserRepository = new ApplicationUserRepository(context);
+            InsurancePackageRepository = new InsurancePackageRepository(context);
         }
 
         public IInsuranceCompanyRepository InsuranceCompanyRepository {  get; private set; }
 
         public IApplicationUserRepository ApplicationUserRepository { get; private set; }
+
+        public IInsurancePackageRepository InsurancePackageRepository { get; private set; }
 
         public void Commit()
         {

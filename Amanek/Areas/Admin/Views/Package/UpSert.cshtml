@@ -1,0 +1,93 @@
+﻿@model InsurancePackage
+
+<div class="container mt-4">
+    @{
+        ViewData["Title"] = Model.Id == 0 ? "Add Package" : "Update Package";
+    }
+
+    <h3>
+        @if (Model.Id == 0)
+        {
+            @:Add New Insurance Package
+        }
+        else
+        {
+            @:Update
+            <span class="text-warning">@Model.PackageName</span>
+            @:Package
+        }
+    </h3>
+
+    <div class="card shadow-lg w-100">
+        <div class="card-body">
+            <form asp-action="UpSert" method="post">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CompanyId" /> <!-- Hidden Company ID -->
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <label class="form-label">Package Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-box"></i></span>
+                            <input asp-for="PackageName" class="form-control form-control-lg" placeholder="Enter package name">
+                        </div>
+                        <span class="text-danger" asp-validation-for="PackageName"></span>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <label class="form-label">Policy Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                            <input asp-for="PolicyPrice" class="form-control form-control-lg" placeholder="Enter policy price">
+                        </div>
+                        <span class="text-danger" asp-validation-for="PolicyPrice"></span>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 mt-3">
+                        <label class="form-label">Payment Frequency</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <select asp-for="PaymentFrequency" asp-items="Html.GetEnumSelectList<PaymentFrequency>()" class="form-control form-control-lg">
+                                <option value="">Select Frequency</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="PaymentFrequency"></span>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 mt-3">
+                        <label class="form-label">Maintenance Schedule</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-tools"></i></span>
+                            <select asp-for="MaintenanceSchedule" asp-items="Html.GetEnumSelectList<MaintenanceSchedule>()" class="form-control form-control-lg">
+                                <option value="">Select Schedule</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="MaintenanceSchedule"></span>
+                    </div>
+                </div>
+
+                <div class="row pt-3">
+                    <div class="d-flex justify-content-between mt-4">
+                        @if (Model.Id == 0)
+                        {
+                            <input type="submit" value="Add Package" class="btn btn-dark form-control" />
+                        }
+                        else
+                        {
+                            <input type="submit" value="Update Package" class="btn btn-dark form-control" />
+                        }
+                        <a asp-action="Index" class="btn btn-outline-dark btn-lg">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
