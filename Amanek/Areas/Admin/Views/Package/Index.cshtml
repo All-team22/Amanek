@@ -14,19 +14,19 @@
     }
 
     h2 {
-        background-color: #111827 !important; /* Darker Shade */
+        background-color: #111827 !important; 
         color: white;
     }
 
     .styled-table thead {
-        background-color: #0f172a !important; /* Dark Navy */
+        background-color: #0f172a !important;
     }
 
     /* Elegant company badge */
     .company-badge {
         display: inline-block;
-        background: linear-gradient(135deg, #d1d5db, #6b7280); /* Darker gradient */
-        color: #111827; /* Dark color */
+        background: linear-gradient(135deg, #d1d5db, #6b7280);
+        color: #111827;
         font-weight: bold;
         padding: 8px 16px;
         border-radius: 50px;
@@ -53,33 +53,37 @@
         overflow: hidden;
     }
 
-        .styled-table thead {
-            background-color: #1e293b;
-            color: #fff;
-            text-transform: uppercase;
-        }
+    .styled-table thead {
+        background-color: #1e293b;
+        color: #fff;
+        text-transform: uppercase;
+    }
 
-        .styled-table th, .styled-table td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
+    .styled-table th, .styled-table td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
 
-        .styled-table tbody tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
 
-        .styled-table tbody tr:hover {
-            background-color: #e0e7ff;
-            transition: 0.3s ease-in-out;
-        }
+    .styled-table tbody tr:hover {
+        background-color: #e0e7ff;
+        transition: 0.3s ease-in-out;
+    }
 
     /* Buttons */
     .btn-custom {
-        padding: 10px 18px;
+        padding: 8px 12px;
         border-radius: 8px;
         font-weight: bold;
         transition: 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
     }
 
     .btn-edit {
@@ -87,18 +91,18 @@
         color: white;
     }
 
-        .btn-edit:hover {
-            background: #1e40af;
-        }
+    .btn-edit:hover {
+        background: #1e40af;
+    }
 
     .btn-delete {
         background: #ef4444;
         color: white;
     }
 
-        .btn-delete:hover {
-            background: #b91c1c;
-        }
+    .btn-delete:hover {
+        background: #b91c1c;
+    }
 
     /* Add Button */
     .btn-add {
@@ -110,15 +114,19 @@
         font-weight: bold;
     }
 
-        .btn-add:hover {
-            background: #047857;
-        }
-
+    .btn-add:hover {
+        background: #047857;
+    }
 </style>
 
 @if (!Model.Any())
 {
     <h1 class="text-center text-muted mt-5">🚫 No Insurance Packages Available</h1>
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Upsert")" class="btn btn-add shadow-lg">
+            <i class="fas fa-plus-circle"></i> Add New Package
+        </a>
+    </div>
 }
 else
 {
@@ -139,7 +147,6 @@ else
                             <th>🔄 Payment Frequency</th>
                             <th>🔧 Maintenance Schedule</th>
                             <th>⚙️ Actions</th>
-                            
                         </tr>
                     </thead>
                     <tbody>
@@ -156,16 +163,24 @@ else
                                 <td class="text-success">$@package.PolicyPrice</td>
                                 <td>@package.PaymentFrequency</td>
                                 <td>@package.MaintenanceSchedule</td>
-                              
-                                    <td>
+                                <td>
+                                    @if (User.IsInRole($"{SD.AdminRole}") && package.CreatedBy == SD.AdminRole)
+                                    {
                                         <a href="@Url.Action("Upsert", new { id = package.Id })" class="btn btn-custom btn-edit">
-                                            <i class="fas fa-edit"></i> Edit
+                                            <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="@Url.Action("Delete", new { id = package.Id })" class="btn btn-custom btn-delete">
-                                            <i class="fas fa-trash-alt"></i> Delete
+                                    }
+                                    else if (User.IsInRole($"{SD.CompanyRole}") && package.CreatedBy == SD.CompanyRole || package.CreatedBy == SD.AdminRole)
+                                    {
+                                        <a href="@Url.Action("Upsert", new { id = package.Id })" class="btn btn-custom btn-edit">
+                                            <i class="fas fa-edit"></i>
                                         </a>
-                                    </td>
-                                
+                                    }
+
+                                    <a href="@Url.Action("Delete", new { id = package.Id })" class="btn btn-custom btn-delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -175,10 +190,8 @@ else
     </div>
 
     <div class="text-center mt-4">
-       
-            <a href="@Url.Action("Upsert")" class="btn btn-add shadow-lg">
-                <i class="fas fa-plus-circle"></i> Add New Package
-            </a>
-        
+        <a href="@Url.Action("Upsert")" class="btn btn-add shadow-lg">
+            <i class="fas fa-plus-circle"></i> Add New Package
+        </a>
     </div>
 }

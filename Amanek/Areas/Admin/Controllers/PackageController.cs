@@ -58,13 +58,16 @@ namespace Amanek.Areas.Admin.Controllers
                 string userId = userManager.GetUserId(User);
                 var company = unitOfWorks.ApplicationUserRepository.GetOne(expression: e => e.Id == userId);
                 package.CompanyId = (int)(company?.CompanyId);
+                package.CreatedBy = SD.CompanyRole;
             }
+           
             
             if (ModelState.IsValid)
             {
 
                 if (package.Id == 0)
                 {
+                    
                     unitOfWorks.InsurancePackageRepository.Add(package);
                     TempData["alert"] = "Added successfully";
                 }

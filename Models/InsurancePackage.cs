@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility;
 
 namespace Models
 {
@@ -26,6 +27,7 @@ namespace Models
 
         [Required(ErrorMessage = "Maintenance Schedule is required")]
         public PaymentFrequency MaintenanceSchedule { get; set; }
+        public string CreatedBy { get; set; } = SD.AdminRole;
         public int CompanyId { get; set; }
         [ValidateNever]
         public InsuranceCompany Company { get; set; }

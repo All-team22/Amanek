@@ -50,7 +50,7 @@
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                             <select asp-for="PaymentFrequency" asp-items="Html.GetEnumSelectList<PaymentFrequency>()" class="form-control form-control-lg">
-                                <option value="">Select Frequency</option>
+                                <option disabled selected>Select Frequency</option>
                             </select>
                         </div>
                         <span class="text-danger" asp-validation-for="PaymentFrequency"></span>
@@ -61,7 +61,7 @@
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-tools"></i></span>
                             <select asp-for="MaintenanceSchedule" asp-items="Html.GetEnumSelectList<MaintenanceSchedule>()" class="form-control form-control-lg">
-                                <option value="">Select Schedule</option>
+                                <option disabled selected>Select Schedule</option>
                             </select>
                         </div>
                         <span class="text-danger" asp-validation-for="MaintenanceSchedule"></span>
