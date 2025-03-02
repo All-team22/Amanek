@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,15 +13,24 @@ namespace Models
     public class Claim
     {
         public int Id { get; set; }
+
         public string UserId { get; set; }
+
         [ForeignKey("UserId")]
         [ValidateNever]
-        public ApplicationUser User { get; set; }   
+        public ApplicationUser User { get; set; }
+
         public int CompanyId { get; set; }
+
+        [ForeignKey("CompanyId")]
         [ValidateNever]
         public InsuranceCompany Company { get; set; }
-        [ValidateNever]
+
         public int PolicyId { get; set; }
+
+        [ForeignKey("PolicyId")]
+        [ValidateNever]
+        [NotMapped]
         public InsurancePolicy Policy { get; set; }
 
         [Required]
@@ -41,6 +51,6 @@ namespace Models
         public string Description { get; set; }
 
         [Display(Name = "Photos")]
-        public List<string> ? Photos { get; set; } = new List<string>();
+        public List<string>? Photos { get; set; } = new List<string>();
     }
 }

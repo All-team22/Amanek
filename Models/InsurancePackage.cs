@@ -18,7 +18,7 @@ namespace Models
 
         [Required(ErrorMessage = "Policy Price is required")]
         [Range(0, double.MaxValue, ErrorMessage = "Policy Price must be a positive number")]
-        public decimal PolicyPrice { get; set; }
+        public double PolicyPrice { get; set; }
 
         [Required(ErrorMessage = "Payment Frequency is required")]
         public PaymentFrequency PaymentFrequency { get; set; }

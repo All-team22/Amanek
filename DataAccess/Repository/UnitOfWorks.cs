@@ -15,11 +15,11 @@ namespace DataAccess.Repository
         public UnitOfWorks(ApplicationDbContext context)
         {
             this.context = context;
-            InsuranceCompany = new InsuranceCompanyRepository(context);
+            InsuranceCompanyRepository = new InsuranceCompanyRepository(context);
             ApplicationUserRepository = new ApplicationUserRepository(context); 
         }
 
-        public IInsuranceCompanyRepository InsuranceCompany {  get; private set; }
+        public IInsuranceCompanyRepository InsuranceCompanyRepository {  get; private set; }
 
         public IApplicationUserRepository ApplicationUserRepository { get; private set; }
 

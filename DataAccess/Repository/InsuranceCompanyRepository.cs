@@ -17,5 +17,20 @@ namespace DataAccess.Repository
         {
             this.context = context;
         }
+
+        public void Update(InsuranceCompany company)
+        {
+            var companyFromDb = context.InsuranceCompanies.FirstOrDefault(e => e.Id == company.Id);
+
+            if (companyFromDb != null)
+            {
+                companyFromDb.Name = company.Name;
+                companyFromDb.Phone = company.Phone;
+                companyFromDb.RegistrationNumber = company.RegistrationNumber;
+                companyFromDb.ContactEmail = company.ContactEmail;
+                companyFromDb.Location = company.Location;
+                companyFromDb.Website = company.Website;
+            }
+        }
     }
 }

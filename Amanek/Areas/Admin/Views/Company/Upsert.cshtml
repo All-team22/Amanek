@@ -1,0 +1,105 @@
+﻿@model InsuranceCompany
+
+<div class="container mt-4">
+    @{
+        ViewData["Title"] = Model.Id == 0 ? "Create" : "Edit";
+    }
+
+    <h3>
+        @if (Model.Id == 0)
+        {
+            @:Create New Company
+        }
+        else
+        {
+            @:Edit
+            <span class="text-warning">@Model.Name</span>
+            @:Company
+        }
+    </h3>
+    <div class="card shadow-lg w-100">
+        <div class="card-body">
+            <form asp-action="UpSert" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <label class="form-label">Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-building"></i></span>
+                            <input asp-for="Name" class="form-control form-control-lg" placeholder="Enter company name">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <label class="form-label">Contact Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input asp-for="ContactEmail" class="form-control form-control-lg" placeholder="Enter email">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mt-3">
+                        <label class="form-label">Registration Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                            <input asp-for="RegistrationNumber" class="form-control form-control-lg" placeholder="Enter registration number">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mt-3">
+                        <label class="form-label">Phone</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                            <input asp-for="Phone" class="form-control form-control-lg" placeholder="Enter phone number">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mt-3">
+                        <label class="form-label">Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input asp-for="Address" class="form-control form-control-lg" placeholder="Enter address">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mt-3">
+                        <label class="form-label">Location</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-geo"></i></span>
+                            <input asp-for="Location" class="form-control form-control-lg" placeholder="Enter location">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mt-3">
+                        <label class="form-label">Website</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                            <input asp-for="Website" class="form-control form-control-lg" placeholder="Enter website URL">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mt-3">
+                        <label class="form-label">Logo</label>
+                        <input asp-for="Logo" type="file" class="form-control form-control-lg">
+                    </div>
+                </div>
+                <div class="row pt-3">
+                    <div class="d-flex justify-content-between mt-4">
+                        @if (Model.Id == 0)
+
+                        {
+                            <input type="submit" value="Create" class="btn btn-dark form-control" />
+                        }
+
+                        else
+
+                        {
+                            <input type="submit" value="Update" class="btn btn-dark form-control" />
+                        }
+                        <a asp-action="Index" class="btn btn-outline-dark btn-lg">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

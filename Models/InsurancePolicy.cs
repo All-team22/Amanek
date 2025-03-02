@@ -42,14 +42,16 @@ namespace Models
         public List<string>? ImgUrls { get; set; }
         public Banks Banks { get; set; }
         public string AccountNumber { get; set; }
-        public List<Claim> claims { get; set; }
-        public string UserID { get; set; }
+
+        public string UserId { get; set; }
+
         [ForeignKey("UserId")]
         [ValidateNever]
         public ApplicationUser User { get; set; }
+
         public int CompanyId { get; set; }
         public InsuranceCompany Company { get; set; }
-        public List<Claim> Claims { get; set; } = new List<Claim>();
+        public ICollection<Claim> Claims { get; set; } = new List<Claim>();
     }
 
     public enum CarManufacturingYear

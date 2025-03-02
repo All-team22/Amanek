@@ -146,7 +146,7 @@ namespace Amanek.Areas.Identity.Pages.Account
                     Value = e.Name
                 }),
 
-                ListOfCompanies = _unitOfWork.InsuranceCompany.Get().Select(e => new SelectListItem
+                ListOfCompanies = _unitOfWork.InsuranceCompanyRepository.Get().Select(e => new SelectListItem
                 {
                     Text = e.Name,
                     Value = e.Id.ToString()

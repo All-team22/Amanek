@@ -44,7 +44,7 @@ namespace Amanek.Areas.Admin.Controllers
                         Text = e.Name
                     }),
                     Company = user.InsuranceCompany?.Id,
-                    ListOfCompanies = unitOfWork.InsuranceCompany.Get().Select(e => new SelectListItem
+                    ListOfCompanies = unitOfWork.InsuranceCompanyRepository.Get().Select(e => new SelectListItem
                     {
                         Text = e.Name,
                         Value = e.Id.ToString()
