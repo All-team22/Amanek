@@ -3,6 +3,7 @@ using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
 using Utility;
 
@@ -20,22 +21,26 @@ namespace Amanek.Areas.Admin.Controllers
             this.unitOfWorks = unitOfWorks;
             this.userManager = userManager;
         }
-        [HttpGet]
+        
         public IActionResult Index()
         {
-            string userId = userManager.GetUserId(User);
-            var user = unitOfWorks.ApplicationUserRepository.GetOne(expression: e=> e.Id == userId);
-            var packages = unitOfWorks.InsurancePackageRepository.Get(expression:e=>e.CompanyId == user.CompanyId);
             if (User.IsInRole($"{SD.AdminRole}"))
             {
-              return View(unitOfWorks.InsurancePackageRepository.Get());
+                return View(unitOfWorks.InsurancePackageRepository.Get(includeProperties: e=>e.Company));
             }
+            string userId = userManager.GetUserId(User);
+            var user = unitOfWorks.ApplicationUserRepository.GetOne(expression: e=> e.Id == userId);
+            var packages = unitOfWorks.InsurancePackageRepository.Get(
+                expression: e => e.CompanyId == user.CompanyId
+                , includeProperties: e => e.Company);
 
             return View(unitOfWorks.InsurancePackageRepository.Get(expression: e => e.CompanyId == user.CompanyId));
         }
         public IActionResult UpSert(int? id)
         {
             InsurancePackage? package = new InsurancePackage();
+            var ListOfCompanies = unitOfWorks.InsuranceCompanyRepository.Get();
+            ViewBag.Companies = ListOfCompanies;
             if (id != null)
             {
                 package = unitOfWorks.InsurancePackageRepository.GetOne(e => e.Id == id);
@@ -48,9 +53,12 @@ namespace Amanek.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpSert(InsurancePackage package)
         {
-            string userId = userManager.GetUserId(User);
-            var company = unitOfWorks.ApplicationUserRepository.GetOne(expression: e => e.Id == userId);
-            package.CompanyId = (int)(company?.CompanyId);
+            if (User.IsInRole(SD.CompanyRole))
+            {
+                string userId = userManager.GetUserId(User);
+                var company = unitOfWorks.ApplicationUserRepository.GetOne(expression: e => e.Id == userId);
+                package.CompanyId = (int)(company?.CompanyId);
+            }
             
             if (ModelState.IsValid)
             {

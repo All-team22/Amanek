@@ -1,37 +1,184 @@
 ﻿@model IEnumerable<InsurancePackage>
+@section Notifications {
+    <partial name="_AlertPartial"></partial>
+}
 
 @{
     ViewData["Title"] = "Insurance Packages";
 }
 
+<style>
+    /* Page Background */
+    body {
+        background-color: #f4f6f9;
+    }
+
+    h2 {
+        background-color: #111827 !important; /* Darker Shade */
+        color: white;
+    }
+
+    .styled-table thead {
+        background-color: #0f172a !important; /* Dark Navy */
+    }
+
+    /* Elegant company badge */
+    .company-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #d1d5db, #6b7280); /* Darker gradient */
+        color: #111827; /* Dark color */
+        font-weight: bold;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+        text-transform: uppercase;
+        border: none;
+    }
+
+    /* Table Container */
+    .table-container {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Table Styles */
+    .styled-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .styled-table thead {
+            background-color: #1e293b;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .styled-table tbody tr:hover {
+            background-color: #e0e7ff;
+            transition: 0.3s ease-in-out;
+        }
+
+    /* Buttons */
+    .btn-custom {
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: 0.3s ease;
+    }
+
+    .btn-edit {
+        background: #2563eb;
+        color: white;
+    }
+
+        .btn-edit:hover {
+            background: #1e40af;
+        }
+
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+    }
+
+        .btn-delete:hover {
+            background: #b91c1c;
+        }
+
+    /* Add Button */
+    .btn-add {
+        background: #10b981;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+        .btn-add:hover {
+            background: #047857;
+        }
+
+</style>
+
 @if (!Model.Any())
 {
-    <h1>Nothing found</h1>
+    <h1 class="text-center text-muted mt-5">🚫 No Insurance Packages Available</h1>
 }
-<h2 class="text-center mb-4">Insurance Packages</h2>
+else
+{
+    <h2 class="text-center mb-4 text-white bg-gray-900 py-3 rounded">📦 Insurance Packages</h2>
 
-<div class="container">
-    <div class="row">
-        @foreach (var package in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <h5 class="card-title font-weight-bold">@package.PackageName</h5>
-                        <p class="card-text"><strong>Policy Price:</strong> $@package.PolicyPrice</p>
-                        <p class="card-text"><strong>Payment Frequency:</strong> @package.PaymentFrequency</p>
-                        <p class="card-text"><strong>Maintenance Schedule:</strong> @package.MaintenanceSchedule</p>
-                        <div class="d-flex justify-content-between">
-                            <a href="@Url.Action("Upsert", new { id = package.Id })" class="btn btn-primary">Edit</a>
-                            <a href="@Url.Action("Delete", new { id = package.Id })" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            @if (User.IsInRole($"{SD.AdminRole}"))
+                            {
+                                <th>🏢 Company</th>
+                            }
+                            <th>📜 Package Name</th>
+                            <th>💰 Policy Price</th>
+                            <th>🔄 Payment Frequency</th>
+                            <th>🔧 Maintenance Schedule</th>
+                            <th>⚙️ Actions</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var package in Model)
+                        {
+                            <tr>
+                                @if (User.IsInRole($"{SD.AdminRole}"))
+                                {
+                                    <td>
+                                        <span class="company-badge">@package.Company.Name</span>
+                                    </td>
+                                }
+                                <td class="font-weight-bold">@package.PackageName</td>
+                                <td class="text-success">$@package.PolicyPrice</td>
+                                <td>@package.PaymentFrequency</td>
+                                <td>@package.MaintenanceSchedule</td>
+                              
+                                    <td>
+                                        <a href="@Url.Action("Upsert", new { id = package.Id })" class="btn btn-custom btn-edit">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = package.Id })" class="btn btn-custom btn-delete">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </a>
+                                    </td>
+                                
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        }
+        </div>
     </div>
-</div>
 
-<div class="text-center mt-4">
-    <a href="@Url.Action("Upsert")" class="btn btn-success">Add New Package</a>
-</div>
+    <div class="text-center mt-4">
+       
+            <a href="@Url.Action("Upsert")" class="btn btn-add shadow-lg">
+                <i class="fas fa-plus-circle"></i> Add New Package
+            </a>
+        
+    </div>
+}
