@@ -13,6 +13,7 @@ namespace Data_Access
         public DbSet<Claim> Claims { get; set; }
         public DbSet<InsurancePackage> InsurancePackages { get; set; }
         public DbSet<InsurancePolicy> InsurancePolicies { get; set; }
+        public DbSet<Payment> payments { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -26,7 +27,24 @@ namespace Data_Access
             //    .WithMany(p => p.Claims)
             //    .HasForeignKey(c => c.PolicyId)
             //    .OnDelete(DeleteBehavior.Cascade);
-           
+
+            builder.Entity<Payment>()
+                .HasOne(p => p.InsurancePolicy)
+                .WithMany()
+                .HasForeignKey(p => p.InsurancePolicyId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            builder.Entity<Payment>()
+                .HasOne(p => p.Claim)
+                .WithMany()
+                .HasForeignKey(p => p.ClaimId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            builder.Entity<Payment>()
+                .HasOne(p => p.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(p => p.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             builder.Entity<IdentityUser>().ToTable("Users");
