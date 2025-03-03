@@ -21,8 +21,7 @@ namespace Models
 
         [Required]
         public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
-
-       
+         
         public int InsuranceCompanyId { get; set; }
         [ForeignKey("InsuranceCompanyId")]
         [ValidateNever]

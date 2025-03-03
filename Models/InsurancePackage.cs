@@ -26,7 +26,7 @@ namespace Models
         public PaymentFrequency PaymentFrequency { get; set; }
 
         [Required(ErrorMessage = "Maintenance Schedule is required")]
-        public PaymentFrequency MaintenanceSchedule { get; set; }
+        public MaintenanceSchedule MaintenanceSchedule { get; set; }
         public string CreatedBy { get; set; } = SD.AdminRole;
         public int CompanyId { get; set; }
         [ValidateNever]

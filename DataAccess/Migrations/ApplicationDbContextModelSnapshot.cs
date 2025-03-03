@@ -276,7 +276,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Claims");
+                    b.ToTable("Claims", (string)null);
                 });
 
             modelBuilder.Entity("Models.InsuranceCompany", b =>
@@ -323,7 +323,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InsuranceCompanies");
+                    b.ToTable("InsuranceCompanies", (string)null);
                 });
 
             modelBuilder.Entity("Models.InsurancePackage", b =>
@@ -359,7 +359,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("InsurancePackages");
+                    b.ToTable("InsurancePackages", (string)null);
                 });
 
             modelBuilder.Entity("Models.InsurancePolicy", b =>
@@ -485,7 +485,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("InsurancePolicies");
+                    b.ToTable("InsurancePolicies", (string)null);
                 });
 
             modelBuilder.Entity("Models.Payment", b =>
@@ -528,7 +528,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("InsurancePolicyId");
 
-                    b.ToTable("payments");
+                    b.ToTable("payments", (string)null);
                 });
 
             modelBuilder.Entity("Models.ApplicationUser", b =>
