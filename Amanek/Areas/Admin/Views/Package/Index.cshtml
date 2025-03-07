@@ -1,197 +1,201 @@
 ﻿@model IEnumerable<InsurancePackage>
+@{
+    ViewData["Title"] = "Insurance Packages";
+    var page = ViewBag.Page as int? ?? 1;
+    var totalPages = ViewBag.TotalPages as int? ?? 1;
+}
+
 @section Notifications {
     <partial name="_AlertPartial"></partial>
 }
 
-@{
-    ViewData["Title"] = "Insurance Packages";
-}
-
 <style>
-    /* Page Background */
     body {
-        background-color: #f4f6f9;
-    }
-
-    h2 {
-        background-color: #111827 !important; 
-        color: white;
-    }
-
-    .styled-table thead {
-        background-color: #0f172a !important;
-    }
-
-    /* Elegant company badge */
-    .company-badge {
-        display: inline-block;
-        background: linear-gradient(135deg, #d1d5db, #6b7280);
-        color: #111827;
-        font-weight: bold;
-        padding: 8px 16px;
-        border-radius: 50px;
-        font-size: 0.9rem;
-        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-        text-transform: uppercase;
-        border: none;
-    }
-
-    /* Table Container */
-    .table-container {
         background: #ffffff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        color: #333;
+        font-family: 'Poppins', sans-serif;
     }
 
-    /* Table Styles */
-    .styled-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        border-radius: 12px;
-        overflow: hidden;
+    .container {
+        max-width: 1200px;
+        margin: auto;
     }
 
-    .styled-table thead {
-        background-color: #1e293b;
-        color: #fff;
-        text-transform: uppercase;
-    }
-
-    .styled-table th, .styled-table td {
-        padding: 15px;
+    .section-title {
         text-align: center;
-        border-bottom: 1px solid #ddd;
+        font-size: 2.2rem;
+        font-weight: bold;
+        margin-bottom: 25px;
+        color: #0056b3;
     }
 
-    .styled-table tbody tr:nth-child(even) {
-        background-color: #f8fafc;
+    .packages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 25px;
+        padding-bottom: 20px;
     }
 
-    .styled-table tbody tr:hover {
-        background-color: #e0e7ff;
-        transition: 0.3s ease-in-out;
+    .package-card {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid #ced4da;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
     }
 
-    /* Buttons */
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .package-title {
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin-bottom: 12px;
+        color: #007bff;
+    }
+
+    .price {
+        font-size: 1.3rem;
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .company-badge {
+        background: #dce3ff;
+        padding: 7px 15px;
+        border-radius: 50px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #003580;
+        font-size: 1rem;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
     .btn-custom {
-        padding: 8px 12px;
+        padding: 10px 14px;
         border-radius: 8px;
         font-weight: bold;
-        transition: 0.3s ease;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.2rem;
+        transition: 0.3s ease;
     }
 
     .btn-edit {
-        background: #2563eb;
+        background: #007bff;
         color: white;
-    }
-
-    .btn-edit:hover {
-        background: #1e40af;
     }
 
     .btn-delete {
-        background: #ef4444;
+        background: #dc3545;
         color: white;
     }
 
-    .btn-delete:hover {
-        background: #b91c1c;
-    }
-
-    /* Add Button */
     .btn-add {
-        background: #10b981;
+        display: block;
+        width: fit-content;
+        margin: 30px auto;
+        background: #28a745;
         color: white;
-        padding: 12px 24px;
+        padding: 14px 28px;
         border-radius: 12px;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         font-weight: bold;
+        text-decoration: none;
+        transition: 0.3s ease;
     }
 
-    .btn-add:hover {
-        background: #047857;
+        .btn-add:hover {
+            background: #218838;
+        }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 30px;
+        padding-bottom: 20px;
     }
+
+        .pagination a {
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            background: #007bff;
+            color: white;
+            transition: 0.3s;
+        }
+
+            .pagination a:hover {
+                background: #0056b3;
+            }
+
+        .pagination .active {
+            background: #0056b3;
+        }
 </style>
+
+<h2 class="section-title">📦 Insurance Packages</h2>
 
 @if (!Model.Any())
 {
     <h1 class="text-center text-muted mt-5">🚫 No Insurance Packages Available</h1>
-    <div class="text-center mt-4">
-        <a href="@Url.Action("Upsert")" class="btn btn-add shadow-lg">
-            <i class="fas fa-plus-circle"></i> Add New Package
-        </a>
-    </div>
+    <a href="@Url.Action("Upsert")" class="btn btn-add shadow-lg">
+        <i class="fas fa-plus-circle"></i> Add New Package
+    </a>
 }
 else
 {
-    <h2 class="text-center mb-4 text-white bg-gray-900 py-3 rounded">📦 Insurance Packages</h2>
-
     <div class="container">
-        <div class="table-container">
-            <div class="table-responsive">
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            @if (User.IsInRole($"{SD.AdminRole}"))
-                            {
-                                <th>🏢 Company</th>
-                            }
-                            <th>📜 Package Name</th>
-                            <th>💰 Policy Price</th>
-                            <th>🔄 Payment Frequency</th>
-                            <th>🔧 Maintenance Schedule</th>
-                            <th>⚙️ Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var package in Model)
+        <div class="packages-grid">
+            @foreach (var package in Model)
+            {
+                <div class="package-card">
+                    @if (User.IsInRole($"{SD.AdminRole}"))
+                    {
+                        <div class="company-badge">🏢 <strong>@package.Company.Name</strong></div>
+                    }
+                    <div class="package-title">📜 @package.PackageName</div>
+                    <div class="price">💰 $@package.PolicyPrice</div>
+                    <div>🔄 Payment Frequency: @package.PaymentFrequency</div>
+                    <div>🔧 Maintenance Schedule: @package.MaintenanceSchedule</div>
+                    <div class="mt-3">
+                        @if ((User.IsInRole($"{SD.AdminRole}") && package.CreatedBy == SD.AdminRole) ||
+                       (User.IsInRole($"{SD.CompanyRole}") && (package.CreatedBy == SD.CompanyRole || package.CreatedBy == SD.AdminRole)))
                         {
-                            <tr>
-                                @if (User.IsInRole($"{SD.AdminRole}"))
-                                {
-                                    <td>
-                                        <span class="company-badge">@package.Company.Name</span>
-                                    </td>
-                                }
-                                <td class="font-weight-bold">@package.PackageName</td>
-                                <td class="text-success">$@package.PolicyPrice</td>
-                                <td>@package.PaymentFrequency</td>
-                                <td>@package.MaintenanceSchedule</td>
-                                <td>
-                                    @if (User.IsInRole($"{SD.AdminRole}") && package.CreatedBy == SD.AdminRole)
-                                    {
-                                        <a href="@Url.Action("Upsert", new { id = package.Id })" class="btn btn-custom btn-edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    }
-                                    else if (User.IsInRole($"{SD.CompanyRole}") && package.CreatedBy == SD.CompanyRole || package.CreatedBy == SD.AdminRole)
-                                    {
-                                        <a href="@Url.Action("Upsert", new { id = package.Id })" class="btn btn-custom btn-edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    }
-
-                                    <a href="@Url.Action("Delete", new { id = package.Id })" class="btn btn-custom btn-delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                            <a href="@Url.Action("Upsert", new { id = package.Id })" class="btn btn-custom btn-edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
                         }
-                    </tbody>
-                </table>
-            </div>
+                        <a href="@Url.Action("Delete", new { id = package.Id })" class="btn btn-custom btn-delete">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 
-    <div class="text-center mt-4">
-        <a href="@Url.Action("Upsert")" class="btn btn-add shadow-lg">
-            <i class="fas fa-plus-circle"></i> Add New Package
-        </a>
+    <div class="pagination">
+        @if (page > 1)
+        {
+            <a href="@Url.Action("Index", new { page = page - 1 })">⬅ Previous</a>
+        }
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <a href="@Url.Action("Index", new { page = i })" class="@(i == page ? "active" : "")">@i</a>
+        }
+        @if (page < totalPages)
+        {
+            <a href="@Url.Action("Index", new { page = page + 1 })">Next ➡</a>
+        }
     </div>
+
+    <a href="@Url.Action("Upsert")" class="btn btn-add shadow-lg">
+        <i class="fas fa-plus-circle"></i> Add New Package
+    </a>
 }

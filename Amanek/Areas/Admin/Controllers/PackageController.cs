@@ -21,21 +21,31 @@ namespace Amanek.Areas.Admin.Controllers
             this.unitOfWorks = unitOfWorks;
             this.userManager = userManager;
         }
-        
-        public IActionResult Index()
+
+        public IActionResult Index(int page = 1, int pageSize = 6)
         {
+            IEnumerable<InsurancePackage> packages;
+
             if (User.IsInRole($"{SD.AdminRole}"))
             {
-                return View(unitOfWorks.InsurancePackageRepository.Get(includeProperties: e=>e.Company));
+                packages = unitOfWorks.InsurancePackageRepository.Get(includeProperties: e => e.Company);
             }
-            string userId = userManager.GetUserId(User);
-            var user = unitOfWorks.ApplicationUserRepository.GetOne(expression: e=> e.Id == userId);
-            var packages = unitOfWorks.InsurancePackageRepository.Get(
-                expression: e => e.CompanyId == user.CompanyId
-                , includeProperties: e => e.Company);
+            else
+            {
+                string userId = userManager.GetUserId(User);
+                var user = unitOfWorks.ApplicationUserRepository.GetOne(e => e.Id == userId);
+                packages = unitOfWorks.InsurancePackageRepository.Get(e => e.CompanyId == user.CompanyId, includeProperties: e => e.Company);
+            }
 
-            return View(unitOfWorks.InsurancePackageRepository.Get(expression: e => e.CompanyId == user.CompanyId));
+            int totalPackages = packages.Count();
+            var paginatedPackages = packages.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalPackages / pageSize);
+
+            return View(paginatedPackages);
         }
+
         public IActionResult UpSert(int? id)
         {
             InsurancePackage? package = new InsurancePackage();
