@@ -36,13 +36,13 @@ namespace Models
     public enum PaymentFrequency
     {
         Monthly,
-        Quartely,
+        Quarterly,
         Half,
         Yearly
     }
     public enum MaintenanceSchedule
     {
-        Quartely,
+        Quarterly,
         Half,
         Yearly
     }

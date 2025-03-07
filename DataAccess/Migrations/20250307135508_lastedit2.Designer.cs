@@ -4,6 +4,7 @@ using Data_Access;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250307135508_lastedit2")]
+    partial class lastedit2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -324,63 +327,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("InsuranceCompanies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Cairo, Egypt",
-                            ContactEmail = "info@misrinsurance.com",
-                            Location = "Cairo",
-                            Name = "Misr Insurance",
-                            Phone = "+20 2 2399 9400",
-                            RegistrationNumber = "10001",
-                            Website = "https://www.misrins.com.eg"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Alexandria, Egypt",
-                            ContactEmail = "support@sci-egypt.com",
-                            Location = "Alexandria",
-                            Name = "Suez Canal Insurance",
-                            Phone = "+20 3 4849 520",
-                            RegistrationNumber = "10002",
-                            Website = "https://www.sci-egypt.com"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Giza, Egypt",
-                            ContactEmail = "contact@gig-egypt.com",
-                            Location = "Giza",
-                            Name = "GIG Egypt",
-                            Phone = "+20 2 3749 1181",
-                            RegistrationNumber = "10003",
-                            Website = "https://www.gig-egypt.com"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Address = "New Cairo, Egypt",
-                            ContactEmail = "info@allianz.com.eg",
-                            Location = "New Cairo",
-                            Name = "Allianz Egypt",
-                            Phone = "+20 2 2260 7000",
-                            RegistrationNumber = "10004",
-                            Website = "https://www.allianz.com.eg"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Address = "Nasr City, Egypt",
-                            ContactEmail = "service@royalinsurance.com.eg",
-                            Location = "Nasr City",
-                            Name = "Royal Insurance",
-                            Phone = "+20 2 2271 8444",
-                            RegistrationNumber = "10005",
-                            Website = "https://www.royalinsurance.com.eg"
-                        });
                 });
 
             modelBuilder.Entity("Models.InsurancePackage", b =>
@@ -417,158 +363,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("InsurancePackages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CompanyId = 1,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 2,
-                            PackageName = "Basic Plan",
-                            PaymentFrequency = 0,
-                            PolicyPrice = 1000.0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CompanyId = 1,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 1,
-                            PackageName = "Premium Plan",
-                            PaymentFrequency = 1,
-                            PolicyPrice = 2500.0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CompanyId = 1,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 0,
-                            PackageName = "Pro Plan",
-                            PaymentFrequency = 3,
-                            PolicyPrice = 4000.0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CompanyId = 2,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 1,
-                            PackageName = "Silver Package",
-                            PaymentFrequency = 0,
-                            PolicyPrice = 1200.0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CompanyId = 2,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 2,
-                            PackageName = "Gold Package",
-                            PaymentFrequency = 1,
-                            PolicyPrice = 2800.0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CompanyId = 2,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 0,
-                            PackageName = "Platinum Package",
-                            PaymentFrequency = 3,
-                            PolicyPrice = 5000.0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CompanyId = 3,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 1,
-                            PackageName = "Starter Plan",
-                            PaymentFrequency = 0,
-                            PolicyPrice = 800.0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CompanyId = 3,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 2,
-                            PackageName = "Family Plan",
-                            PaymentFrequency = 1,
-                            PolicyPrice = 3000.0
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CompanyId = 3,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 0,
-                            PackageName = "Elite Plan",
-                            PaymentFrequency = 3,
-                            PolicyPrice = 5500.0
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CompanyId = 4,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 1,
-                            PackageName = "Standard Cover",
-                            PaymentFrequency = 0,
-                            PolicyPrice = 1500.0
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CompanyId = 4,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 2,
-                            PackageName = "Advanced Cover",
-                            PaymentFrequency = 1,
-                            PolicyPrice = 3200.0
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CompanyId = 4,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 0,
-                            PackageName = "Executive Cover",
-                            PaymentFrequency = 3,
-                            PolicyPrice = 6000.0
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CompanyId = 5,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 1,
-                            PackageName = "Basic Shield",
-                            PaymentFrequency = 0,
-                            PolicyPrice = 900.0
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CompanyId = 5,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 2,
-                            PackageName = "Comprehensive Shield",
-                            PaymentFrequency = 1,
-                            PolicyPrice = 3500.0
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CompanyId = 5,
-                            CreatedBy = "Company",
-                            MaintenanceSchedule = 0,
-                            PackageName = "Ultimate Shield",
-                            PaymentFrequency = 3,
-                            PolicyPrice = 7000.0
-                        });
                 });
 
             modelBuilder.Entity("Models.InsurancePolicy", b =>

@@ -12,6 +12,7 @@ namespace DataAccess.Repository.IRepository
          IApplicationUserRepository ApplicationUserRepository { get; }
          IInsurancePackageRepository InsurancePackageRepository { get; }
          IPaymentRepository PaymentRepository { get; }
+         IInsurancePolicyRepository InsurancePolicyRepository { get; }
         void Commit ();
     }
 }

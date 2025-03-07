@@ -39,6 +39,7 @@ namespace Models
         public InsuranceType InsuranceType { get; set; }
         public double CoverageAmount { get; set; }
         public AdditionalCoverage AdditionalCoverage { get; set; }
+        public PolicyStatus PolicyStatus { get; set; } = PolicyStatus.Pending;
         public List<string>? ImgUrls { get; set; }
         public Banks Banks { get; set; }
         public string AccountNumber { get; set; }
@@ -133,4 +134,9 @@ namespace Models
     {
         RoadsideAssistance, RentalCarReimbursement, GlassCoverage
     }
+    public enum PolicyStatus
+    {
+        Accepted , Rejected , Pending
+    }
+
 }
