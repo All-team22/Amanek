@@ -18,6 +18,7 @@ namespace DataAccess.Repository
             InsuranceCompanyRepository = new InsuranceCompanyRepository(context);
             ApplicationUserRepository = new ApplicationUserRepository(context);
             InsurancePackageRepository = new InsurancePackageRepository(context);
+            PaymentRepository = new PaymentRepository(context);
         }
 
         public IInsuranceCompanyRepository InsuranceCompanyRepository {  get; private set; }
@@ -25,6 +26,8 @@ namespace DataAccess.Repository
         public IApplicationUserRepository ApplicationUserRepository { get; private set; }
 
         public IInsurancePackageRepository InsurancePackageRepository { get; private set; }
+
+        public IPaymentRepository PaymentRepository { get; private set; }
 
         public void Commit()
         {
