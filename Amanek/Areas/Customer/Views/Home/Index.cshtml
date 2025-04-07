@@ -1,8 +1,97 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model List<InsurancePackage>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <h2 class="text-center text-gradient mb-4">🛡️ Insurance Packages</h2>
+
+    <!-- Search Form -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-10">
+            <input type="text" name="searchTerm" value="@(ViewBag.SearchTerm as string ?? "")"
+                   class="form-control" placeholder="🔍 Search packages or companies..." />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" type="submit">Search</button>
+        </div>
+    </form>
+
+    <!-- Cards Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var package in Model)
+        {
+            <div class="col">
+                <div class="card package-card h-100 border-0 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="mb-2">
+                            <span class="badge bg-info text-dark">🏢 @package.Company.Name</span>
+                        </div>
+
+                        <h5 class="card-title text-primary">📦 @package.PackageName</h5>
+                        <p class="card-text text-success fw-bold">💰 $@package.PolicyPrice</p>
+                        <p class="text-muted small mb-3">🔄 @package.PaymentFrequency | 🔧 @package.MaintenanceSchedule</p>
+
+                        <div class="mt-auto d-flex flex-column gap-2">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#detailsModal-@package.Id">
+                                <i class="fas fa-eye me-1"></i> View Details
+                            </button>
+
+                            <a href="@Url.Action("Apply", new { id = package.Id })" class="btn btn-primary btn-sm">
+                                <i class="fas fa-paper-plane me-1"></i> Apply Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="detailsModal-@package.Id" tabindex="-1" aria-labelledby="detailsModalLabel-@package.Id" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailsModalLabel-@package.Id">📦 @package.PackageName - Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Company:</strong> @package.Company.Name</p>
+                                <p><strong>Policy Price:</strong> $@package.PolicyPrice</p>
+                                <p><strong>Payment Frequency:</strong> @package.PaymentFrequency</p>
+                                <p><strong>Maintenance Schedule:</strong> @package.MaintenanceSchedule</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" href="?page=@i&searchTerm=@(ViewBag.SearchTerm ?? "")">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
 </div>
+
+<!-- Optional: Styling -->
+<style>
+    .text-gradient {
+        background: linear-gradient(to right, #007bff, #00c6ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+    }
+
+    .package-card {
+        background: #f9fafe;
+        border-radius: 1rem;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.75rem 1.5rem rgba(0, 123, 255, 0.2);
+        }
+</style>
