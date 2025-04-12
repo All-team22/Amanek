@@ -4,6 +4,7 @@ using Data_Access;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250411185620_someedit")]
+    partial class someedit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -635,9 +638,6 @@ namespace DataAccess.Migrations
                     b.Property<double>("EstimatedAnnualMileage")
                         .HasColumnType("float");
 
-                    b.Property<int?>("InsurancePackageId")
-                        .HasColumnType("int");
-
                     b.Property<int>("InsuranceType")
                         .HasColumnType("int");
 
@@ -703,18 +703,11 @@ namespace DataAccess.Migrations
                     b.Property<int>("VehicleUse")
                         .HasColumnType("int");
 
-                    b.Property<int>("packageId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("InsurancePackageId");
-
                     b.HasIndex("UserId");
-
-                    b.HasIndex("packageId");
 
                     b.ToTable("InsurancePolicies");
                 });
@@ -883,25 +876,13 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.InsurancePackage", null)
-                        .WithMany("Policies")
-                        .HasForeignKey("InsurancePackageId");
-
                     b.HasOne("Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.InsurancePackage", "Package")
-                        .WithMany()
-                        .HasForeignKey("packageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Company");
-
-                    b.Navigation("Package");
 
                     b.Navigation("User");
                 });
@@ -956,11 +937,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Packages");
 
                     b.Navigation("Policy");
-                });
-
-            modelBuilder.Entity("Models.InsurancePackage", b =>
-                {
-                    b.Navigation("Policies");
                 });
 
             modelBuilder.Entity("Models.InsurancePolicy", b =>

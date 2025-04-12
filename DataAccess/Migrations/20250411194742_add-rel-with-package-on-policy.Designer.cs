@@ -4,6 +4,7 @@ using Data_Access;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250411194742_add-rel-with-package-on-policy")]
+    partial class addrelwithpackageonpolicy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -635,9 +638,6 @@ namespace DataAccess.Migrations
                     b.Property<double>("EstimatedAnnualMileage")
                         .HasColumnType("float");
 
-                    b.Property<int?>("InsurancePackageId")
-                        .HasColumnType("int");
-
                     b.Property<int>("InsuranceType")
                         .HasColumnType("int");
 
@@ -709,8 +709,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("InsurancePackageId");
 
                     b.HasIndex("UserId");
 
@@ -883,10 +881,6 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.InsurancePackage", null)
-                        .WithMany("Policies")
-                        .HasForeignKey("InsurancePackageId");
-
                     b.HasOne("Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -956,11 +950,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Packages");
 
                     b.Navigation("Policy");
-                });
-
-            modelBuilder.Entity("Models.InsurancePackage", b =>
-                {
-                    b.Navigation("Policies");
                 });
 
             modelBuilder.Entity("Models.InsurancePolicy", b =>

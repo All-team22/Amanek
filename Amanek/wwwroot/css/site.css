@@ -31,3 +31,55 @@ body {
     width: 40px;
     object-fit: cover;
 }
+.insurance-policy-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    background-color: #f9f9f9;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+    .insurance-policy-container h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+    }
+
+.policy-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+    .policy-section h4 {
+        color: #2980b9;
+        margin-bottom: 1rem;
+    }
+
+.policy-field {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.policy-label {
+    font-weight: bold;
+    color: #34495e;
+}
+
+.policy-value {
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .policy-field {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+

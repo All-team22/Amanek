@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Routing.Constraints;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,10 +28,16 @@ namespace Models
 
         [Required(ErrorMessage = "Maintenance Schedule is required")]
         public MaintenanceSchedule MaintenanceSchedule { get; set; }
+        public string? CarStartModels { get; set; }
+        public string? CarEndModels { get; set; }
+        public double? CarMinPrice { get; set; }
+        public double? CarMaxPrice { get; set; }
         public string CreatedBy { get; set; } = SD.AdminRole;
         public int CompanyId { get; set; }
         [ValidateNever]
         public InsuranceCompany Company { get; set; }
+        [ValidateNever]
+        public List<InsurancePolicy> Policies { get; set; } = new List<InsurancePolicy>();
     }
 
     public enum PaymentFrequency

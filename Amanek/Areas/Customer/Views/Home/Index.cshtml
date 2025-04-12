@@ -34,9 +34,10 @@
                                 <i class="fas fa-eye me-1"></i> View Details
                             </button>
 
-                            <a href="@Url.Action("Apply", new { id = package.Id })" class="btn btn-primary btn-sm">
+                            <a href="@Url.Action("Create", "Policy", new { area = "Admin", packageId = package.Id, companyId = @package.CompanyId })" class="btn btn-primary btn-sm">
                                 <i class="fas fa-paper-plane me-1"></i> Apply Now
                             </a>
+
                         </div>
                     </div>
                 </div>

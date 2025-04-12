@@ -1,0 +1,204 @@
+﻿@model InsurancePolicy
+@{
+    ViewData["Title"] = "Create Insurance Policy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+<link href="~/css/insurance-policy.css" rel="stylesheet" />
+<h2>Create Insurance Policy</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!-- Personal Information -->
+    <div class="form-group">
+        <label asp-for="UserIdentificationNumber"></label>
+        <input asp-for="UserIdentificationNumber" class="form-control" />
+        <span asp-validation-for="UserIdentificationNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UserIDExpirationDate"></label>
+        <input asp-for="UserIDExpirationDate" type="date" class="form-control" />
+        <span asp-validation-for="UserIDExpirationDate" class="text-danger"></span>
+    </div>
+
+    <!-- Health -->
+    <div class="form-group">
+        <label asp-for="BloodType"></label>
+        <select asp-for="BloodType" asp-items="Html.GetEnumSelectList<BloodType>()" class="form-control"></select>
+        <span asp-validation-for="BloodType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MedicalCondition"></label>
+        <select asp-for="MedicalCondition" asp-items="Html.GetEnumSelectList<MedicalCondition>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MedicalCondComment"></label>
+        <textarea asp-for="MedicalCondComment" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AllergiesStatus"></label>
+        <select asp-for="AllergiesStatus" asp-items="Html.GetEnumSelectList<AllergiesStatus>()" class="form-control"></select>
+        <span asp-validation-for="AllergiesStatus" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SmokingStatus"></label>
+        <select asp-for="SmokingStatus" asp-items="Html.GetEnumSelectList<SmokingStatus>()" class="form-control"></select>
+        <span asp-validation-for="SmokingStatus" class="text-danger"></span>
+    </div>
+
+    <!-- Driving License -->
+    <div class="form-group">
+        <label asp-for="LicenseNumber"></label>
+        <input asp-for="LicenseNumber" class="form-control" />
+        <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LicenseDegree"></label>
+        <select asp-for="LicenseDegree" asp-items="Html.GetEnumSelectList<LicenseDegree>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TravelStatus"></label>
+        <select asp-for="TravelStatus" asp-items="Html.GetEnumSelectList<TravelStatus>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DrivingAccident"></label>
+        <select asp-for="DrivingAccident" asp-items="Html.GetEnumSelectList<DrivingAccident>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LicenseIssuanceDate"></label>
+        <input asp-for="LicenseIssuanceDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LicenseEndDate"></label>
+        <input asp-for="LicenseEndDate" type="date" class="form-control" />
+    </div>
+
+    <!-- Car Details -->
+    <div class="form-group">
+        <label asp-for="CarBrand"></label>
+        <select asp-for="CarBrand" asp-items="Html.GetEnumSelectList<CarBrand>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CarManufacturingYear"></label>
+        <select asp-for="CarManufacturingYear" asp-items="Html.GetEnumSelectList<CarManufacturingYear>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CarPrice"></label>
+        <input asp-for="CarPrice" class="form-control" />
+        <span asp-validation-for="CarPrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EstimatedAnnualMileage"></label>
+        <input asp-for="EstimatedAnnualMileage" class="form-control" />
+        <span asp-validation-for="EstimatedAnnualMileage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LicensePlateNumber"></label>
+        <input asp-for="LicensePlateNumber" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ParkingLocation"></label>
+        <select asp-for="ParkingLocation" asp-items="Html.GetEnumSelectList<ParkingLocation>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Security Features</label><br />
+        @foreach (SecurityFeatures feature in Enum.GetValues(typeof(SecurityFeatures)))
+        {
+            <div class="form-check form-check-inline">
+                <input type="checkbox" class="form-check-input" name="SecurityFeatures" value="@((int)feature)" />
+                <label class="form-check-label">@feature</label>
+            </div>
+        }
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VehicleUse"></label>
+        <select asp-for="VehicleUse" asp-items="Html.GetEnumSelectList<VehicleUse>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CompanyCarRental"></label>
+        <select asp-for="CompanyCarRental" asp-items="Html.GetEnumSelectList<CompanyCarRental>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DriverCarRental"></label>
+        <select asp-for="DriverCarRental" asp-items="Html.GetEnumSelectList<DriverCarRental>()" class="form-control"></select>
+    </div>
+
+    <!-- Insurance Options -->
+    <div class="form-group">
+        <label asp-for="InsuranceType"></label>
+        <select asp-for="InsuranceType" asp-items="Html.GetEnumSelectList<InsuranceType>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CoverageAmount"></label>
+        <input asp-for="CoverageAmount" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Additional Coverage</label><br />
+        @foreach (AdditionalCoverage coverage in Enum.GetValues(typeof(AdditionalCoverage)))
+        {
+            <div class="form-check form-check-inline">
+                <input type="checkbox" class="form-check-input" name="AdditionalCoverage" value="@((int)coverage)" />
+                <label class="form-check-label">@coverage</label>
+            </div>
+        }
+    </div>
+
+    <!-- Uploaded Docs -->
+    <div class="form-group">
+        <label asp-for="UserDocs">Upload Docs</label>
+        <input asp-for="UserDocs" type="file" class="form-control" />
+    </div>
+
+    <!-- Bank Info -->
+    <div class="form-group">
+        <label asp-for="Banks"></label>
+        <select asp-for="Banks" asp-items="Html.GetEnumSelectList<Banks>()" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BankAccountNumber"></label>
+        <input asp-for="BankAccountNumber" class="form-control" />
+    </div>
+
+    <!-- Acknowledgement -->
+    <div class="form-group">
+        <label asp-for="UserAcknowledgement"></label>
+        <select asp-for="UserAcknowledgement" asp-items="Html.GetEnumSelectList<UserAcknowledgement>()" class="form-control"></select>
+    </div>
+
+    <!-- Hidden fields -->
+    <input asp-for="UserId" type="hidden" />
+    <input asp-for="CompanyId" type="hidden" />
+    <input asp-for="packageId" type="hidden" />
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

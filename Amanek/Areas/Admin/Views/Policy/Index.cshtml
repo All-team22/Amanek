@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Models.InsurancePolicy>
+
+@{
+    ViewData["Title"] = "Insurance Policies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Insurance Policies</h2>
+
+    <!-- Search & Filter Form -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="searchString" value="@ViewBag.CurrentFilter" class="form-control" placeholder="Search by user or license number..." />
+        </div>
+        <div class="col-md-3">
+            <select name="statusFilter" class="form-select">
+                <option value="">All Statuses</option>
+                @foreach (var status in Enum.GetValues(typeof(Models.PolicyStatus)))
+                {
+                    var selected = ViewBag.CurrentStatus == status.ToString() ? "selected" : "";
+                    <option value="@status" selected>@status</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-dark">
+                Filter
+            </button>
+        </div>
+    </form>
+
+    <!-- Insurance Policies Table -->
+    <table class="table table-hover table-bordered align-middle">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Company</th>
+                <th>Package</th>
+                <th>Status</th>
+                <th>License Number</th>
+                <th>Medical Condition</th>
+                <th>Smoking</th>
+                <th>Travel</th>
+                <th>Start</th>
+                <th>End</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var policy in Model)
+            {
+                <tr>
+                    <td>@policy.Id</td>
+                    <td>@policy.User?.FullName</td>
+                    <td>@policy.Company?.Name</td>
+                    <td>@policy.Package.PackageName</td>
+                    <td>@policy.PolicyStatus</td>
+                    <td>@policy.LicenseNumber</td>
+                    <td>@policy.MedicalCondition</td>
+                    <td>@policy.SmokingStatus</td>
+                    <td>@policy.TravelStatus</td>
+                    <td>@policy.LicenseIssuanceDate.ToShortDateString()</td>
+                    <td>@policy.LicenseEndDate.ToShortDateString()</td>
+                    <td class="text-center">
+                        <a href="@Url.Action("Edit", new { id = policy.Id })" class="btn btn-warning">Edit</a>
+                        <a href="@Url.Action("Details", new { id = policy.Id })" class="btn btn-info">Details</a>
+                        <a href="@Url.Action("Delete", new { id = policy.Id })" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item @(ViewBag.PageNumber == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = 1, searchString = ViewBag.CurrentFilter, statusFilter = ViewBag.CurrentStatus })">First</a>
+                </li>
+                <li class="page-item @(ViewBag.PageNumber == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.PageNumber - 1, searchString = ViewBag.CurrentFilter, statusFilter = ViewBag.CurrentStatus })">Previous</a>
+                </li>
+
+                @for (var i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = i, searchString = ViewBag.CurrentFilter, statusFilter = ViewBag.CurrentStatus })">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.PageNumber == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.PageNumber + 1, searchString = ViewBag.CurrentFilter, statusFilter = ViewBag.CurrentStatus })">Next</a>
+                </li>
+                <li class="page-item @(ViewBag.PageNumber == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.TotalPages, searchString = ViewBag.CurrentFilter, statusFilter = ViewBag.CurrentStatus })">Last</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>

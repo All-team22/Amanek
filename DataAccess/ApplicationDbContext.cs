@@ -28,6 +28,12 @@ namespace Data_Access
             //    .WithMany(p => p.Claims)
             //    .HasForeignKey(c => c.PolicyId)
             //    .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<InsurancePolicy>()
+    .HasOne(ip => ip.Package) 
+    .WithMany()
+    .HasForeignKey(ip => ip.packageId)
+    .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<InsuranceCompany>().HasData(
                     new InsuranceCompany { Id = 1, Name = "Misr Insurance", RegistrationNumber = "10001", Address = "Cairo, Egypt", ContactEmail = "info@misrinsurance.com", Phone = "+20 2 2399 9400", Location = "Cairo", Website = "https://www.misrins.com.eg", Logo = null },
                     new InsuranceCompany { Id = 2, Name = "Suez Canal Insurance", RegistrationNumber = "10002", Address = "Alexandria, Egypt", ContactEmail = "support@sci-egypt.com", Phone = "+20 3 4849 520", Location = "Alexandria", Website = "https://www.sci-egypt.com", Logo = null },
