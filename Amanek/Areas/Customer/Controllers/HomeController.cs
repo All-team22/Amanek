@@ -19,7 +19,7 @@ namespace Amanek.Areas.Customer.Controllers
             UnitOfWorks = unitOfWorks;
         }
 
-        public IActionResult Index(string searchTerm, int page = 1)
+        public IActionResult Index(string searchTerm, int carModel, double? carPrice, double? packageMinPrice, double? packageMaxPrice, int page = 1)
         {
             int pageSize = 9;
 
@@ -30,15 +30,32 @@ namespace Amanek.Areas.Customer.Controllers
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 searchTerm = searchTerm.ToLower();
-
                 packagesQuery = packagesQuery.Where(p =>
                     p.PackageName.ToLower().Contains(searchTerm) ||
                     p.Company.Name.ToLower().Contains(searchTerm));
+            }
 
+            if (carPrice.HasValue)
+            {
+                packagesQuery = packagesQuery.Where(p => p.CarMinPrice <= carPrice.Value && p.CarMaxPrice >= carPrice.Value);
+            }
+
+            if (packageMinPrice.HasValue)
+            {
+                packagesQuery = packagesQuery.Where(p => p.PolicyPrice >= packageMinPrice.Value);
+            }
+
+            if (packageMaxPrice.HasValue)
+            {
+                packagesQuery = packagesQuery.Where(p => p.PolicyPrice <= packageMaxPrice.Value);
+            }
+
+            if (carModel > 2005)
+            {
+                packagesQuery = packagesQuery.Where(p => p.CarStartModels <= carModel && p.CarEndModels >= carModel);
             }
 
             int totalPackages = packagesQuery.Count();
-
             var paginatedPackages = packagesQuery
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -47,9 +64,14 @@ namespace Amanek.Areas.Customer.Controllers
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalPackages / pageSize);
             ViewBag.CurrentPage = page;
             ViewBag.SearchTerm = searchTerm;
+            ViewBag.CarModel = carModel;
+            ViewBag.CarPrice = carPrice;
+            ViewBag.PackageMinPrice = packageMinPrice;
+            ViewBag.PackageMaxPrice = packageMaxPrice;
 
             return View(paginatedPackages);
         }
+
 
 
 

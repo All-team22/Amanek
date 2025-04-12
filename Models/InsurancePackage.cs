@@ -28,8 +28,8 @@ namespace Models
 
         [Required(ErrorMessage = "Maintenance Schedule is required")]
         public MaintenanceSchedule MaintenanceSchedule { get; set; }
-        public string? CarStartModels { get; set; }
-        public string? CarEndModels { get; set; }
+        public int? CarStartModels { get; set; }
+        public int? CarEndModels { get; set; }
         public double? CarMinPrice { get; set; }
         public double? CarMaxPrice { get; set; }
         public string CreatedBy { get; set; } = SD.AdminRole;

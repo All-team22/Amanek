@@ -3,15 +3,52 @@
 <div class="container py-5">
     <h2 class="text-center text-gradient mb-4">🛡️ Insurance Packages</h2>
 
-    <!-- Search Form -->
-    <form method="get" class="row g-3 mb-4">
-        <div class="col-md-10">
-            <input type="text" name="searchTerm" value="@(ViewBag.SearchTerm as string ?? "")"
-                   class="form-control" placeholder="🔍 Search packages or companies..." />
+    <form method="get" asp-action="Index" class="mb-4">
+        <div class="row g-3">
+            <!-- Search by Package Name or Company -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="searchTerm">Search</label>
+                    <input type="text" name="searchTerm" class="form-control" id="searchTerm" placeholder="Package name or company..." value="@ViewBag.SearchTerm" />
+                </div>
+            </div>
+
+            <!-- Filter by Car Model -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="carModel">Car Model</label>
+                    <input type="number" min="2005" name="carModel" class="form-control" id="carModel" placeholder="Enter your car model" value="@ViewBag.CarModel" />
+                </div>
+            </div>
+
+            <!-- Filter by Car Price -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="carPrice">Car Price ($)</label>
+                    <input type="number" name="carPrice" class="form-control" id="carPrice" placeholder="Enter your car price" value="@ViewBag.CarPrice" />
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-            <button class="btn btn-primary w-100" type="submit">Search</button>
+
+        <div class="row g-3">
+            <!-- Filter by Package Min Price -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="packageMinPrice">Package Min Price ($)</label>
+                    <input type="number" name="packageMinPrice" class="form-control" id="packageMinPrice" placeholder="Minimum price" value="@ViewBag.PackageMinPrice" />
+                </div>
+            </div>
+
+            <!-- Filter by Package Max Price -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="packageMaxPrice">Package Max Price ($)</label>
+                    <input type="number" name="packageMaxPrice" class="form-control" id="packageMaxPrice" placeholder="Maximum price" value="@ViewBag.PackageMaxPrice" />
+                </div>
+            </div>
         </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
     </form>
 
     <!-- Cards Grid -->
@@ -52,9 +89,17 @@
                             </div>
                             <div class="modal-body">
                                 <p><strong>Company:</strong> @package.Company.Name</p>
+                                <p><strong>Package Name:</strong> @package.PackageName</p>
                                 <p><strong>Policy Price:</strong> $@package.PolicyPrice</p>
                                 <p><strong>Payment Frequency:</strong> @package.PaymentFrequency</p>
                                 <p><strong>Maintenance Schedule:</strong> @package.MaintenanceSchedule</p>
+                                <p><strong>Car Start Models:</strong> @package.CarStartModels</p>
+                                <p><strong>Car End Models:</strong> @package.CarEndModels</p>
+                                <p><strong>Car Min Price:</strong> $@package.CarMinPrice</p>
+                                <p><strong>Car Max Price:</strong> $@package.CarMaxPrice</p>
+                                <a href="@Url.Action("Create", "Policy", new { area = "Admin", packageId = package.Id, companyId = @package.CompanyId })" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-paper-plane me-1"></i> Apply Now
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -95,4 +140,16 @@
             transform: translateY(-5px);
             box-shadow: 0 0.75rem 1.5rem rgba(0, 123, 255, 0.2);
         }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 0.5rem;
+    }
+
+    .btn-primary {
+        border-radius: 0.5rem;
+    }
 </style>
